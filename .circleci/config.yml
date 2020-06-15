@@ -54,6 +54,6 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-              heroku run python manage.py deploy
-              heroku restart
+              HEROKU_API_KEY=$HEROKU_API_KEY heroku run python manage.py deploy
+              HEROKU_API_KEY=$HEROKU_API_KEY heroku restart
             fi
