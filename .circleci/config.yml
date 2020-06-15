@@ -6,8 +6,6 @@ jobs:
         environment:
           FLASK_CONFIG: testing
           TEST_DATABASE_URL: postgresql://ubuntu@localhost/circle_test?sslmode=disable
-          HEROKU_API_KEY: $HEROKU_API_KEY
-          HEROKU_APP_NAME: $HEROKU_APP_NAME
       - image: circleci/postgres:9.6.5-alpine-ram
         environment:
           POSTGRES_USER: ubuntu
@@ -53,9 +51,13 @@ jobs:
             - '48:a0:87:54:ca:75:32:12:c6:9e:a2:77:a4:7a:08:a4'
       - deploy:
           name: Deploy Master to Heroku
+          environment:
+            HEROKU_API_KEY: $HEROKU_API_KEY
+            HEROKU_APP_NAME: $HEROKU_APP_NAME
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+#              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+              git push heroku master
               heroku run python manage.py deploy
               heroku restart
             fi
